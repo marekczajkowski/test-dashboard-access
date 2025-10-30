@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-config
+  namespace: so-tt-bb-f2e91   # namespace docelowy GitRepo
+data:
+  my.property: "hello-fleet"
