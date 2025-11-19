@@ -1,6 +1,6 @@
 ---
 defaultRegistry: "ghcr.io/streamx-dev/streamx-blueprints"
-defaultImageTag: "1.0.6-jvm"
+defaultImageTag: "1.0.7-jvm"
 ingestion:
   rest-ingestion:
     environment:
