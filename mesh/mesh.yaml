@@ -2,6 +2,8 @@ default:
   environmentFrom:
     secrets:
       - secret.properties
+    configs:
+      - test.properties
 descriptors:
   relay:
     type: "processing"
