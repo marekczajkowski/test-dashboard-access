@@ -1,3 +1,7 @@
+default:
+  environmentFrom:
+    secrets:
+      - secret.properties
 descriptors:
   relay:
     type: "processing"
