@@ -1,3 +1,20 @@
+gateways:
+  - httpRoutes:
+      - name: ingestion
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /ingest
+            backendRefs:
+              - name: rest-ingestion
+                port: 8080
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
 descriptors:
   relay:
     type: "processing"
