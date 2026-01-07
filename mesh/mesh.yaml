@@ -508,7 +508,7 @@ deploymentConfig:
         enabled: true
         minAvailable: 1
     edge:
-      replicas: 2
+      replicas: 1
       podDisruptionBudget:
         enabled: true
         maxUnavailable: 2
