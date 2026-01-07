@@ -513,6 +513,7 @@ deploymentConfig:
         enabled: true
         maxUnavailable: 2
     processing:
+      replicas: 0
       podDisruptionBudget:
         enabled: true
         maxUnavailable: 1
