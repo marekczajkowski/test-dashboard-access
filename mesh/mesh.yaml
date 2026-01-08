@@ -521,7 +521,7 @@ deploymentConfig:
   edge:
     blueprint-search:
       stateful: true
-      replicas: 1
+      replicas: 0
       probes: { }
       containers:
         opensearch:
