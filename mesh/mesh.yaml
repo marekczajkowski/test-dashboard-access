@@ -166,6 +166,7 @@ descriptors:
         outgoing:
           indexable-resources: { }
           indexable-resource-fragments: { }
+          
   web:
     type: edge
     containers:
