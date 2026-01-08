@@ -6,7 +6,7 @@ descriptors:
         incoming:
           events: { }
         outgoing:
-          relayed-events: { }
+          relayed-events: { } 
   image-optimization:
     type: processing
     containers:
