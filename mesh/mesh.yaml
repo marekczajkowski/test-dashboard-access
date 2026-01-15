@@ -26,7 +26,7 @@ descriptors:
         volumes:
           - repository-volume:/usr/share/nginx/html
         healthCheck: null
-    volumes:
+    volumes: 
       repository-volume: {}
 
 sources:
