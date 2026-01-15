@@ -7,7 +7,7 @@ descriptors:
           events: {}
         outgoing:
           relayed-events: {}
-
+ 
   web-server-sink:
     type: edge
     containers:
