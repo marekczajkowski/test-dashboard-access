@@ -74,6 +74,7 @@ ingestion:
   rest-ingestion:
     containers:
       proxy:
+        environment:
 processing:
   pages-relay:
     descriptor: relay
