@@ -72,6 +72,8 @@ gateways:
 
 ingestion:
   rest-ingestion:
+    containers:
+      proxy:
 processing:
   pages-relay:
     descriptor: relay
