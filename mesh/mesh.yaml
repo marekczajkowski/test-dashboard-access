@@ -97,7 +97,7 @@ edge:
             ref: outbox.pages
       webserver:
         volumesFrom:
-          configs: {}
+          configs: 
 
 deploymentConfig:
   defaults:
