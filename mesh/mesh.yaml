@@ -33,7 +33,7 @@ descriptors:
           incoming-pages: { }
           optimized-assets: { }
         outgoing:
-          adjusted-pages: { }
+          adjusted-pages: { } 
         environment:
           STREAMX_BLUEPRINTS_LOCAL_REFERENCES_REWRITER_PROCESSED_PAGE_PATH_PATTERN: ".*"
   json-aggregator:
