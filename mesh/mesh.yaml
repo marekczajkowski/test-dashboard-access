@@ -1,21 +1,22 @@
+---
 descriptors:
   relay:
     type: "processing"
     containers:
       relay:
         incoming:
-          events: { }
+          events: {}
         outgoing:
-          relayed-events: { } 
+          relayed-events: {}
   image-optimization:
-    type: processing
+    type: "processing"
     containers:
       processing-function:
-        image: ghcr.io/streamx-com/streamx-blueprints/optimized-images-generator:latest-native
+        image: "ghcr.io/streamx-com/streamx-blueprints/optimized-images-generator:latest-native"
         incoming:
-          incoming-assets: { }
+          incoming-assets: {}
         outgoing:
-          optimized-assets: { }
+          optimized-assets: {}
         environment:
           STREAMX_BLUEPRINTS_OPTIMIZED_IMAGES_GENERATOR_PROCESSED_IMAGE_PATH_PATTERN: ".*(png|gif|jpg|jpeg)$"
           STREAMX_BLUEPRINTS_OPTIMIZED_IMAGES_GENERATOR_OPTIMIZED_IMAGE_FILE_NAME-SUFFIX: "-optimized"
@@ -30,23 +31,23 @@ descriptors:
       processing-function:
         image: "ghcr.io/streamx-com/streamx-blueprints/local-references-rewriter:latest-native"
         incoming:
-          incoming-pages: { }
-          optimized-assets: { }
+          incoming-pages: {}
+          optimized-assets: {}
         outgoing:
-          adjusted-pages: { } 
+          adjusted-pages: {}
         environment:
           STREAMX_BLUEPRINTS_LOCAL_REFERENCES_REWRITER_PROCESSED_PAGE_PATH_PATTERN: ".*"
   json-aggregator:
-    type: processing
+    type: "processing"
     containers:
       processing-function:
-        image: ghcr.io/streamx-com/streamx-blueprints/json-aggregator:latest-native
+        image: "ghcr.io/streamx-com/streamx-blueprints/json-aggregator:latest-native"
         incoming:
-          data: { }
-          multivalued-data: { }
+          data: {}
+          multivalued-data: {}
         outgoing:
-          aggregated-data: { }
-          aggregated-multivalued-data: { }
+          aggregated-data: {}
+          aggregated-multivalued-data: {}
         environment:
           STREAMX_BLUEPRINTS_JSON_AGGREGATOR_CONFIGURATIONS_0__MASTER_NAMESPACE: "pim"
           STREAMX_BLUEPRINTS_JSON_AGGREGATOR_CONFIGURATIONS_0__OPTIONAL_NAMESPACES: "price,reviews"
@@ -61,71 +62,68 @@ descriptors:
     type: "processing"
     containers:
       processing-function:
-        image: ghcr.io/streamx-com/streamx-blueprints/external-references-rewriter:latest-native
+        image: "ghcr.io/streamx-com/streamx-blueprints/external-references-rewriter:latest-native"
         incoming:
-          incoming-resources: { }
+          incoming-resources: {}
         outgoing:
-          outgoing-resources: { }
-          download-requests: { }
-  
+          outgoing-resources: {}
+          download-requests: {}
   resource-downloader:
     type: "processing"
     containers:
       processing-function:
-        image: ghcr.io/streamx-com/streamx-blueprints/resource-downloader:latest-native
+        image: "ghcr.io/streamx-com/streamx-blueprints/resource-downloader:latest-native"
         incoming:
-          download-requests: { }
+          download-requests: {}
         outgoing:
-          downloaded-pages: { }
-          downloaded-assets: { }
-          downloaded-web-resources: { }
-  
+          downloaded-pages: {}
+          downloaded-assets: {}
+          downloaded-web-resources: {}
   event-converter:
-    type: processing
+    type: "processing"
     containers:
       processing-function:
-        image: ghcr.io/streamx-com/streamx-blueprints/event-converter:latest-native
+        image: "ghcr.io/streamx-com/streamx-blueprints/event-converter:latest-native"
         incoming:
-          resources: { }
+          resources: {}
         outgoing:
-          indexable-resources: { }
-  
+          indexable-resources: {}
   rendering-engine:
-    type: processing
+    type: "processing"
     containers:
       processing-function:
-        image: ghcr.io/streamx-com/streamx-blueprints/rendering-engine:latest-native
+        image: "ghcr.io/streamx-com/streamx-blueprints/rendering-engine:latest-native"
         incoming:
-          data: { }
-          renderers: { }
-          rendering-contexts: { }
-          incoming-rendering-requests: { }
+          data: {}
+          renderers: {}
+          rendering-contexts: {}
+          incoming-rendering-requests: {}
         outgoing:
-          outgoing-rendering-requests: { }
-          pages: { }
-          fragments: { }
+          outgoing-rendering-requests: {}
+          pages: {}
+          fragments: {}
   composition-engine:
-    type: processing
+    type: "processing"
     containers:
       processing-function:
-        image: ghcr.io/streamx-com/streamx-blueprints/composition-engine:latest-native
+        image: "ghcr.io/streamx-com/streamx-blueprints/composition-engine:latest-native"
         incoming:
-          layouts: { }
-          compositions: { }
-          incoming-page-compose-requests: { }
+          layouts: {}
+          compositions: {}
+          incoming-page-compose-requests: {}
         outgoing:
-          pages: { }
-          outgoing-page-compose-requests: { }
+          pages: {}
+          outgoing-page-compose-requests: {}
   data-collector:
-    type: processing
+    type: "processing"
     containers:
       processing-function:
-        image: ghcr.io/streamx-com/streamx-blueprints/data-collector:latest-native
+        image: "ghcr.io/streamx-com/streamx-blueprints/data-collector:latest-native"
         incoming:
-          data: { }
+          data: {}
         outgoing:
-          collected-data: { }
-          web-resources: { }
+          collected-data: {}
+          web-resources: {}
         environment:
           STREAMX_BLUEPRINTS_DATA_COLLECTOR_DIRTY-CHECK_MAX-DIRTY-SEQUENCE-COUNT: "0"
           STREAMX_BLUEPRINTS_DATA_COLLECTOR_DIRTY-CHECK_INTERVAL: "1s"
@@ -140,364 +138,345 @@ descriptors:
           STREAMX_BLUEPRINTS_DATA_COLLECTOR_CONFIGURATIONS_CHEAPEST-PRODUCTS-BY-CATEGORY_PROPERTIES_MAX: "8"
           STREAMX_BLUEPRINTS_DATA_COLLECTOR_CONFIGURATIONS_CHEAPEST-PRODUCTS-BY-CATEGORY_PROPERTIES_SORTBY: "id"
   sitemap-generator:
-    type: processing
+    type: "processing"
     containers:
       processing-function:
-        image: ghcr.io/streamx-com/streamx-blueprints/sitemap-generator:latest-native
+        image: "ghcr.io/streamx-com/streamx-blueprints/sitemap-generator:latest-native"
         incoming:
-          incoming-pages: { }
+          incoming-pages: {}
         outgoing:
-          outgoing-sitemaps: { }
+          outgoing-sitemaps: {}
         environment:
           STREAMX_BLUEPRINTS_SITEMAP_GENERATOR_BASE_URL: "http://localhost:8081"
           STREAMX_BLUEPRINTS_SITEMAP_GENERATOR_OUTPUT_KEY: "sitemap.xml"
           STREAMX_BLUEPRINTS_SITEMAP_GENERATOR_DIRTY_CHECK_INTERVAL: "1s"
           STREAMX_BLUEPRINTS_SITEMAP_GENERATOR_DIRTY_CHECK_MAX_DIRTY_SEQUENCE_COUNT: "1"
   indexables-producer:
-    type: processing
+    type: "processing"
     containers:
       processing-function:
-        image: ghcr.io/streamx-com/streamx-blueprints/indexable-resources-producer:latest-native
+        image: "ghcr.io/streamx-com/streamx-blueprints/indexable-resources-producer:latest-native"
+        incoming:
+          pages: {}
+          fragments: {}
+        outgoing:
+          indexable-resources: {}
+          indexable-resource-fragments: {}
         environment:
           STREAMX_BLUEPRINTS_INDEXABLE-RESOURCES-PRODUCER_INDEX-FRAGMENTS: "true"
-        incoming:
-          pages: { }
-          fragments: { }
-        outgoing:
-          indexable-resources: { }
-          indexable-resource-fragments: { }
-          
   web:
-    type: edge
+    type: "edge"
     containers:
       server:
-        image: ghcr.io/streamx-com/streamx-blueprints/web-server-sink:latest-native
-        environment:
-          QUASAR_MESSAGING_STORE_BACKEND: rocksdb
-          QUASAR_MESSAGING_STORE_ROCKSDB_PATH: /var/lib/rocksdb
-          STREAMX_BLUEPRINTS_WEB-DELIVERY-SERVICE_RESOURCES_DIRECTORY: "/srv/www"
+        image: "ghcr.io/streamx-com/streamx-blueprints/web-server-sink:latest-native"
         incoming:
-          resources: { }
-        servicePorts:
-          - 8083:8080
+          resources: {}
+        environment:
+          QUASAR_MESSAGING_STORE_BACKEND: "rocksdb"
+          QUASAR_MESSAGING_STORE_ROCKSDB_PATH: "/var/lib/rocksdb"
+          STREAMX_BLUEPRINTS_WEB-DELIVERY-SERVICE_RESOURCES_DIRECTORY: "/srv/www"
         volumes:
-          - repository-volume:/srv/www
-          - rocksdb:/var/lib/rocksdb
+        - "repository-volume:/srv/www"
+        - "rocksdb:/var/lib/rocksdb"
+        servicePorts:
+        - "8083:8080"
     volumes:
       repository-volume:
-        size: 10Gi
+        size: "10Gi"
       rocksdb:
-        size: 5Gi
+        size: "5Gi"
   search:
-    type: edge
+    type: "edge"
     containers:
       server:
-        image: ghcr.io/streamx-com/streamx-blueprints/opensearch-sink:latest-jvm
+        image: "ghcr.io/streamx-com/streamx-blueprints/opensearch-sink:latest-jvm"
         incoming:
-          indexable-resources: { }
-          indexable-resource-fragments: { }
-        servicePorts:
-          - 80:8080
+          indexable-resources: {}
+          indexable-resource-fragments: {}
         environment:
           QUARKUS_ELASTICSEARCH_HOSTS: "blueprint-search.opensearch:9200"
           QUASAR_MESSAGING_STORE_BACKEND: "rocksdb"
           QUASAR_MESSAGING_STORE_ROCKSDB_PATH: "/var/lib/rocksdb"
         volumes:
-          - "repository-volume:/usr/share/opensearch/data"
+        - "repository-volume:/usr/share/opensearch/data"
+        servicePorts:
+        - "80:8080"
       opensearch:
         image: "docker.io/opensearchproject/opensearch:2.17.1"
-        servicePorts:
-          - 9200:9200
-          - 9300:9300
         environment:
           DISABLE_SECURITY_PLUGIN: "true"
           OPENSEARCH_INITIAL_ADMIN_PASSWORD: "myStrongPassword123@456"
           discovery.type: "single-node"
         volumes:
-          - opensearch-data:/usr/share/opensearch/data
+        - "opensearch-data:/usr/share/opensearch/data"
+        servicePorts:
+        - "9200:9200"
+        - "9300:9300"
     volumes:
       repository-volume:
-        size: 10Gi
+        size: "10Gi"
       opensearch-data:
-        size: 15Gi
-
-gateways:
-  - httpRoutes:
-      - name: ingestion
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /ingest
-            backendRefs:
-              - name: ingestion/rest-ingestion
-                port: 8080
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-      - name: search
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /search
-            backendRefs:
-              - name: edge/blueprint-search
-                port: 80
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-      - name: web
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /web
-            backendRefs:
-              - name: edge/blueprint-web
-                port: 8083
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-
+        size: "15Gi"
+ingestion:
+  rest-ingestion: {}
 sources:
   cli:
     outgoing:
-      - ref: "inbox.pages"
-        produces:
-          - "com.streamx.blueprints.page.published.v1"
-          - "com.streamx.blueprints.page.unpublished.v1"
-      - ref: "inbox.web-resources"
-        produces:
-          - "com.streamx.blueprints.web-resource.published.v1"
-          - "com.streamx.blueprints.web-resource.unpublished.v1"
-      - ref: "inbox.assets"
-        produces:
-          - "com.streamx.blueprints.asset.published.v1"
-          - "com.streamx.blueprints.asset.unpublished.v1"
-      - ref: "inbox.layouts"
-        produces:
-          - "com.streamx.blueprints.layout.published.v1"
-          - "com.streamx.blueprints.layout.unpublished.v1"
-      - ref: "inbox.compositions"
-        produces:
-          - "com.streamx.blueprints.composition.published.v1"
-          - "com.streamx.blueprints.composition.unpublished.v1"
-      - ref: "inbox.data"
-        produces:
-          - "com.streamx.blueprints.data.published.v1"
-          - "com.streamx.blueprints.data.unpublished.v1"
-      - ref: "inbox.renderers"
-        produces:
-          - "com.streamx.blueprints.renderer.published.v1"
-          - "com.streamx.blueprints.renderer.unpublished.v1"
-      - ref: "inbox.rendering-contexts"
-        produces:
-          - "com.streamx.blueprints.rendering-context.published.v1"
-          - "com.streamx.blueprints.rendering-context.unpublished.v1"
-
-ingestion:
-  rest-ingestion: { }
-
+    - ref: "inbox.pages"
+      produces:
+      - "com.streamx.blueprints.page.published.v1"
+      - "com.streamx.blueprints.page.unpublished.v1"
+    - ref: "inbox.web-resources"
+      produces:
+      - "com.streamx.blueprints.web-resource.published.v1"
+      - "com.streamx.blueprints.web-resource.unpublished.v1"
+    - ref: "inbox.assets"
+      produces:
+      - "com.streamx.blueprints.asset.published.v1"
+      - "com.streamx.blueprints.asset.unpublished.v1"
+    - ref: "inbox.layouts"
+      produces:
+      - "com.streamx.blueprints.layout.published.v1"
+      - "com.streamx.blueprints.layout.unpublished.v1"
+    - ref: "inbox.compositions"
+      produces:
+      - "com.streamx.blueprints.composition.published.v1"
+      - "com.streamx.blueprints.composition.unpublished.v1"
+    - ref: "inbox.data"
+      produces:
+      - "com.streamx.blueprints.data.published.v1"
+      - "com.streamx.blueprints.data.unpublished.v1"
+    - ref: "inbox.renderers"
+      produces:
+      - "com.streamx.blueprints.renderer.published.v1"
+      - "com.streamx.blueprints.renderer.unpublished.v1"
+    - ref: "inbox.rendering-contexts"
+      produces:
+      - "com.streamx.blueprints.rendering-context.published.v1"
+      - "com.streamx.blueprints.rendering-context.unpublished.v1"
 processing:
-  # Relay service for pages is not needed because the image optimization service performs relaying pages
-  blueprint-relay-web-resources:
-    descriptor: relay
-    containers:
-      relay:
-        incoming:
-          events:
-            ref: inbox.web-resources
-        outgoing:
-          relayed-events:
-            ref: outbox.web-resources
-  
-  blueprint-relay-assets:
-    descriptor: relay
-    containers:
-      relay:
-        incoming:
-          events:
-            ref: inbox.assets
-        outgoing:
-          relayed-events:
-            ref: outbox.assets
-  
-  blueprint-relay-fragments:
-    descriptor: relay
-    containers:
-      relay:
-        incoming:
-          events:
-            ref: inbox.fragments
-        outgoing:
-          relayed-events:
-            ref: relay.fragments
-  
-  blueprint-outbox-fragments-relay:
-    descriptor: relay
-    containers:
-      relay:
-        incoming:
-          events:
-            ref: relay.fragments
-        outgoing:
-          relayed-events:
-            ref: outbox.fragments
-  
-  blueprint-image-optimization:
-    descriptor: image-optimization
-    containers:
-      processing-function:
-        incoming:
-          incoming-assets:
-            ref: inbox.assets
-        outgoing:
-          optimized-assets:
-            ref: relay.optimized-assets
-  
-  blueprint-local-references-rewriter:
-    descriptor: local-references-rewriter
-    containers:
-      processing-function:
-        incoming:
-          incoming-pages:
-            ref: inbox.pages
-          optimized-assets:
-            ref: relay.optimized-assets
-        outgoing:
-          adjusted-pages:
-            ref: outbox.pages
-  
-  blueprint-json-aggregator:
-    descriptor: json-aggregator
-    containers:
-      processing-function:
-        incoming:
-          data:
-            ref: inbox.data
-          multivalued-data:
-            ref: inbox.data
-        outgoing:
-          aggregated-data:
-            ref: relay.aggregated-data
-          aggregated-multivalued-data:
-            ref: inbox.data
-  
-  blueprint-event-converter:
-    descriptor: event-converter
-    containers:
-      processing-function:
-        incoming:
-          resources:
-            ref: relay.data,relay.aggregated-data
-        outgoing:
-          indexable-resources:
-            ref: outbox.indexable-resources
-  
-  blueprint-rendering-engine:
-    descriptor: rendering-engine
-    containers:
-      processing-function:
-        incoming:
-          data:
-            ref: inbox.data,relay.aggregated-data,relay.collected-data
-          renderers:
-            ref: inbox.renderers
-          rendering-contexts:
-            ref: inbox.rendering-contexts
-          incoming-rendering-requests:
-            ref: relay.rendering-requests
-        outgoing:
-          outgoing-rendering-requests:
-            ref: relay.rendering-requests
-          pages:
-            ref: inbox.pages
-          fragments:
-            ref: inbox.fragments
-  
   blueprint-composition-engine:
-    descriptor: composition-engine
+    descriptor: "composition-engine"
     containers:
       processing-function:
         incoming:
           layouts:
-            ref: inbox.layouts
+            ref: "inbox.layouts"
           compositions:
-            ref: inbox.compositions
+            ref: "inbox.compositions"
           incoming-page-compose-requests:
-            ref: relay.page-compose-requests
+            ref: "relay.page-compose-requests"
         outgoing:
           pages:
-            ref: inbox.pages
+            ref: "inbox.pages"
           outgoing-page-compose-requests:
-            ref: relay.page-compose-requests
-  
+            ref: "relay.page-compose-requests"
   blueprint-data-collector:
-    descriptor: data-collector
+    descriptor: "data-collector"
     containers:
       processing-function:
         incoming:
           data:
-            ref: inbox.data,relay.aggregated-data,relay.collected-data
+            ref: "inbox.data,relay.aggregated-data,relay.collected-data"
         outgoing:
           collected-data:
-            ref: relay.collected-data
+            ref: "relay.collected-data"
           web-resources:
-            ref: outbox.web-resources
-  
-  blueprint-sitemap-generator:
-    descriptor: sitemap-generator
+            ref: "outbox.web-resources"
+  blueprint-event-converter:
+    descriptor: "event-converter"
     containers:
       processing-function:
         incoming:
-          incoming-pages:
-            ref: inbox.pages
+          resources:
+            ref: "relay.data,relay.aggregated-data"
         outgoing:
-          outgoing-sitemaps:
-            ref: outbox.web-resources
-  
+          indexable-resources:
+            ref: "outbox.indexable-resources"
+  blueprint-image-optimization:
+    descriptor: "image-optimization"
+    containers:
+      processing-function:
+        incoming:
+          incoming-assets:
+            ref: "inbox.assets"
+        outgoing:
+          optimized-assets:
+            ref: "relay.optimized-assets"
   blueprint-indexables-producer:
-    descriptor: indexables-producer
+    descriptor: "indexables-producer"
     containers:
       processing-function:
         incoming:
           pages:
-            ref: inbox.pages
+            ref: "inbox.pages"
           fragments:
-            ref: inbox.fragments
+            ref: "inbox.fragments"
         outgoing:
           indexable-resources:
-            ref: outbox.indexable-resources
+            ref: "outbox.indexable-resources"
           indexable-resource-fragments:
-            ref: outbox.indexable-resource-fragments
-
+            ref: "outbox.indexable-resource-fragments"
+  blueprint-json-aggregator:
+    descriptor: "json-aggregator"
+    containers:
+      processing-function:
+        incoming:
+          data:
+            ref: "inbox.data"
+          multivalued-data:
+            ref: "inbox.data"
+        outgoing:
+          aggregated-data:
+            ref: "relay.aggregated-data"
+          aggregated-multivalued-data:
+            ref: "inbox.data"
+  blueprint-local-references-rewriter:
+    descriptor: "local-references-rewriter"
+    containers:
+      processing-function:
+        incoming:
+          incoming-pages:
+            ref: "inbox.pages"
+          optimized-assets:
+            ref: "relay.optimized-assets"
+        outgoing:
+          adjusted-pages:
+            ref: "outbox.pages"
+  blueprint-outbox-fragments-relay:
+    descriptor: "relay"
+    containers:
+      relay:
+        incoming:
+          events:
+            ref: "relay.fragments"
+        outgoing:
+          relayed-events:
+            ref: "outbox.fragments"
+  blueprint-relay-assets:
+    descriptor: "relay"
+    containers:
+      relay:
+        incoming:
+          events:
+            ref: "inbox.assets"
+        outgoing:
+          relayed-events:
+            ref: "outbox.assets"
+  blueprint-relay-fragments:
+    descriptor: "relay"
+    containers:
+      relay:
+        incoming:
+          events:
+            ref: "inbox.fragments"
+        outgoing:
+          relayed-events:
+            ref: "relay.fragments"
+  blueprint-relay-web-resources:
+    descriptor: "relay"
+    containers:
+      relay:
+        incoming:
+          events:
+            ref: "inbox.web-resources"
+        outgoing:
+          relayed-events:
+            ref: "outbox.web-resources"
+  blueprint-rendering-engine:
+    descriptor: "rendering-engine"
+    containers:
+      processing-function:
+        incoming:
+          data:
+            ref: "inbox.data,relay.aggregated-data,relay.collected-data"
+          renderers:
+            ref: "inbox.renderers"
+          rendering-contexts:
+            ref: "inbox.rendering-contexts"
+          incoming-rendering-requests:
+            ref: "relay.rendering-requests"
+        outgoing:
+          outgoing-rendering-requests:
+            ref: "relay.rendering-requests"
+          pages:
+            ref: "inbox.pages"
+          fragments:
+            ref: "inbox.fragments"
+  blueprint-sitemap-generator:
+    descriptor: "sitemap-generator"
+    containers:
+      processing-function:
+        incoming:
+          incoming-pages:
+            ref: "inbox.pages"
+        outgoing:
+          outgoing-sitemaps:
+            ref: "outbox.web-resources"
 edge:
+  blueprint-search:
+    descriptor: "search"
+    containers:
+      server:
+        incoming:
+          indexable-resources:
+            ref: "outbox.indexable-resources"
+          indexable-resource-fragments:
+            ref: "outbox.indexable-resource-fragments"
+        environment:
+          QUARKUS_ELASTICSEARCH_HOSTS: "blueprint-search.opensearch:9200"
+          STREAMX_BLUEPRINTS_OPENSEARCH-SINK_MIGRATION-SCRIPT-LOCATIONS: "classpath:opensearch/service-init"
   blueprint-web:
-    descriptor: web
+    descriptor: "web"
     containers:
       server:
         incoming:
           resources:
-            ref: outbox.pages,outbox.fragments,relay.optimized-assets,outbox.assets,outbox.web-resources
-  blueprint-search:
-    descriptor: search
-    containers:
-      server:
-        incoming:
-          indexable-resources:
-            ref: outbox.indexable-resources
-          indexable-resource-fragments:
-            ref: outbox.indexable-resource-fragments
-        environment:
-          QUARKUS_ELASTICSEARCH_HOSTS: "blueprint-search.opensearch:9200"
-          STREAMX_BLUEPRINTS_OPENSEARCH-SINK_MIGRATION-SCRIPT-LOCATIONS: "classpath:opensearch/service-init"
+            ref: ""
+gateways:
+- httpRoutes:
+  - name: "ingestion"
+    rules:
+    - backendRefs:
+      - name: "ingestion/rest-ingestion"
+        port: 8080
+      filters:
+      - type: "URLRewrite"
+        urlRewrite:
+          path:
+            replacePrefixMatch: "/"
+            type: "ReplacePrefixMatch"
+      matches:
+      - path:
+          type: "PathPrefix"
+          value: "/ingest"
+  - name: "search"
+    rules:
+    - backendRefs:
+      - name: "edge/blueprint-search"
+        port: 80
+      filters:
+      - type: "URLRewrite"
+        urlRewrite:
+          path:
+            replacePrefixMatch: "/"
+            type: "ReplacePrefixMatch"
+      matches:
+      - path:
+          type: "PathPrefix"
+          value: "/search"
+  - name: "web"
+    rules:
+    - backendRefs:
+      - name: "edge/blueprint-web"
+        port: 8083
+      filters:
+      - type: "URLRewrite"
+        urlRewrite:
+          path:
+            replacePrefixMatch: "/"
+            type: "ReplacePrefixMatch"
+      matches:
+      - path:
+          type: "PathPrefix"
+          value: "/web"
