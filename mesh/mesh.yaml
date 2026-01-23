@@ -221,65 +221,52 @@ descriptors:
         size: 15Gi
 
 gateways:
-  - name: main
-    httpRoutes:
+  - httpRoutes:
       - name: ingestion
-        hostnames:
-          - "rest-ingestion-default-127-0-0-1.nip.io"
         rules:
-          - backendRefs:
-              - name: rest-ingestion
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /ingest
+            backendRefs:
+              - name: ingestion/rest-ingestion
                 port: 8080
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
       - name: search
-        parentRefs:
-          - sectionName: search-https
-        hostnames:
-          - "blueprint-search-default-127-0-0-1.nip.io"
         rules:
           - matches:
               - path:
                   type: PathPrefix
-                  value: /
+                  value: /search
             backendRefs:
-              - name: blueprint-search
+              - name: edge/blueprint-search
                 port: 80
-      - name: search-redirect
-        parentRefs:
-          - sectionName: search-http
-        hostnames:
-          - "blueprint-search-default-127-0-0-1.nip.io"
-        rules:
-          - filters:
-              - type: RequestRedirect
-                requestRedirect:
-                  scheme: https
-                  statusCode: 301
-                  port: 443
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
       - name: web
-        parentRefs:
-          - sectionName: web-https
-        hostnames:
-          - "blueprint-web-default-127-0-0-1.nip.io"
         rules:
           - matches:
               - path:
                   type: PathPrefix
-                  value: /
+                  value: /web
             backendRefs:
-              - name: blueprint-web
+              - name: edge/blueprint-web
                 port: 8083
-      - name: web-redirect
-        parentRefs:
-          - sectionName: web-http
-        hostnames:
-          - "blueprint-web-default-127-0-0-1.nip.io"
-        rules:
-          - filters:
-              - type: RequestRedirect
-                requestRedirect:
-                  scheme: https
-                  statusCode: 301
-                  port: 443
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
 
 sources:
   cli:
