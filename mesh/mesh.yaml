@@ -280,8 +280,6 @@ gateways:
     - name: ingestion-route
       parentRefs:
         - sectionName: streamx-gateway
-      hostnames:
-        - "ingestion.127.0.0.1.nip.io"
       rules:
         - matches:
             - path:
@@ -293,8 +291,6 @@ gateways:
     - name: web-server-and-search-route
       parentRefs:
         - sectionName: streamx-gateway
-      hostnames:
-        - "web.127.0.0.1.nip.io"
       rules:
         - matches:
             - path:
