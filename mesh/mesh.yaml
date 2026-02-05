@@ -31,7 +31,7 @@ descriptors:
       repository-volume: {}
 
 sources:
-  resources-source:
+  cli:
     outgoing:
       - ref: inbox.pages
         produces:
