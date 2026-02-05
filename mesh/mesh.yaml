@@ -62,7 +62,7 @@ gateways:
                   type: PathPrefix
                   value: /web
             backendRefs:
-              - name: edge/web-server-sink
+              - name: edge/web-server-sink-service
                 port: 80
             filters:
               - type: URLRewrite
