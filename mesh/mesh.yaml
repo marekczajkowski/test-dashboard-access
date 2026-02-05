@@ -39,7 +39,6 @@ descriptors:
           incoming-pages: {}
           optimized-assets:
             shared: false
-            initState: replay
             enforceMonotonicEventTime: true
         outgoing:
           adjusted-pages: {}
