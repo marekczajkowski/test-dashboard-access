@@ -286,7 +286,7 @@ gateways:
                 type: PathPrefix
                 value: /
           backendRefs:
-            - name: ingestion/rest-ingestion.proxy
+            - name: ingestion/rest-ingestion
               port: 8080
     - name: web-server-and-search-route
       parentRefs:
@@ -297,14 +297,14 @@ gateways:
                 type: PathPrefix
                 value: /search
           backendRefs:
-            - name: edge/blueprint-opensearch-sink.sink
+            - name: edge/blueprint-opensearch-sink
               port: 8080
         - matches:
             - path:
                 type: PathPrefix
                 value: /
           backendRefs:
-            - name: edge/blueprint-web-server-sink.webserver
+            - name: edge/blueprint-web-server-sink
               port: 80
 
 sources:
