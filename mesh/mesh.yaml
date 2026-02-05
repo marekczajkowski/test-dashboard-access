@@ -39,7 +39,6 @@ descriptors:
           incoming-pages: {}
           optimized-assets:
             shared: false
-            enforceMonotonicEventTime: true
         outgoing:
           adjusted-pages: {}
         volumes:
