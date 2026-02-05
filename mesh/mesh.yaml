@@ -528,9 +528,14 @@ processing:
             ref: relay.aggregated-data
           aggregated-multivalued-data:
             ref: relay.data
-        environmentFrom:
-          configs:
-            - json-aggregator.properties
+        environment:
+          STREAMX_BLUEPRINTS_JSON_AGGREGATOR_CONFIGURATIONS_0_MASTER_NAMESPACE : "pim"
+          STREAMX_BLUEPRINTS_JSON_AGGREGATOR_CONFIGURATIONS_0_OPTIONAL_NAMESPACES: "price,reviews"
+          STREAMX_BLUEPRINTS_JSON_AGGREGATOR_CONFIGURATIONS_0_OUTPUT_NAMESPACE: "product"
+          STREAMX_BLUEPRINTS_JSON_AGGREGATOR_CONFIGURATIONS_1_MASTER_NAMESPACE: "review"
+          STREAMX_BLUEPRINTS_JSON_AGGREGATOR_CONFIGURATIONS_1_OUTPUT_NAMESPACE: "reviews"
+          STREAMX_BLUEPRINTS_JSON_AGGREGATOR_CONFIGURATIONS_2_MASTER_NAMESPACE: "cat"
+          STREAMX_BLUEPRINTS_JSON_AGGREGATOR_CONFIGURATIONS_2_OUTPUT_NAMESPACE: "category"
 
   blueprint-event-converter:
     descriptor: event-converter
