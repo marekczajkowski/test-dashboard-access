@@ -638,12 +638,12 @@ edge:
             - opensearch/service-init:/deployments/opensearch/service-init/additional
         environmentFrom:
           secrets:
-            - plaintext/opensearch-sink.properties
+            - encrypted/opensearch-sink.properties
 
       opensearch:
         environmentFrom:
           secrets:
-            - plaintext/opensearch-sink-opensearch.properties
+            - encrypted/opensearch-sink-opensearch.properties
 
   blueprint-web-server-sink:
     descriptor: web-server-sink
