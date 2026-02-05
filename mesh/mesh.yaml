@@ -63,7 +63,7 @@ gateways:
                   value: /web
             backendRefs:
               - name: edge/web-server-sink
-                port: 8083
+                port: 80
             filters:
               - type: URLRewrite
                 urlRewrite:
