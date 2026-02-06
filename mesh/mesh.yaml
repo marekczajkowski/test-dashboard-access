@@ -96,6 +96,9 @@ edge:
         incoming:
           resources:
             ref: outbox.pages
+        environmentFrom:
+          configs:
+            - test.properties
       webserver:
         volumesFrom:
           configs: 
