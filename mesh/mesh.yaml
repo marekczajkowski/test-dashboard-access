@@ -479,7 +479,7 @@ processing:
           configs:
             - local-references-rewriter.properties
 
-  blueprint-external-references-rewriter:
+  blueprint-data-external-references-rewriter:
     descriptor: external-references-rewriter
     containers:
       processor:
