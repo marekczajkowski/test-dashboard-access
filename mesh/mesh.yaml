@@ -1,101 +1,1975 @@
+---
+default:
+  service:
+    repository: "string"
+    tag: "string"
+  environment:
+    additionalProp1: "string"
+    additionalProp2: "string"
+    additionalProp3: "string"
+  environmentFrom:
+    configs:
+    - "string"
+    secrets:
+    - "string"
 descriptors:
-  relay:
-    type: processing
+  additionalProp1:
+    type: "string"
     containers:
-      service:
+      additionalProp1:
+        image: "string"
+        channelsPort: 0
         incoming:
-          events: {}
+          additionalProp1:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp2:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp3:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
         outgoing:
-          relayed-events: {}
-
- 
-  web-server-sink:
-    type: edge 
-    containers:
-      sink:
-        image: ghcr.io/streamx-com/streamx-blueprints/web-server-sink:3.0.7-jvm
-        incoming:
-          resources: {}
+          additionalProp1:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            binding: "string"
+            produces:
+            - "string"
+        autoRef:
+        - from: "string"
+          to: "string"
+          using: "sync-state"
         environment:
-          STREAMX_BLUEPRINTS_WEB_SERVER_SINK_STORAGE_ROOT_DIRECTORY: /srv/www
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
         volumes:
-          - repository-volume:/srv/www
-      webserver:
-        image: docker.io/library/nginx:1.26.0
+        - "string"
         servicePorts:
-          - 80:80
-        volumes:
-          - repository-volume:/usr/share/nginx/html
-        healthCheck: null
-    volumes: 
-      repository-volume: {}
-
-sources:
-  cli:
-    outgoing:
-      - ref: inbox.pages
-        produces:
-          - com.streamx.blueprints.page.published.v1
-          - com.streamx.blueprints.page.unpublished.v1
-
-gateways:
-  - httpRoutes:
-      - name: ingestion
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /ingest
-            backendRefs:
-              - name: ingestion/rest-ingestion
-                port: 8080
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-      - name: web
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /web
-            backendRefs:
-              - name: edge/web-server-sink-service
-                port: 80
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-
-ingestion:
-  rest-ingestion:
-    containers:
-      proxy:
-        environment:
-processing:
-  pages-relay:
-    descriptor: relay
-    containers:
-      service:
+        - "string"
+        healthCheck: "string"
+      additionalProp2:
+        image: "string"
+        channelsPort: 0
         incoming:
-          events:
-            ref: inbox.pages
+          additionalProp1:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp2:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp3:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
         outgoing:
-          relayed-events:
-            ref: outbox.pages
-
-edge:
-  web-server-sink-service:
-    descriptor: web-server-sink
-    containers:
-      sink:
+          additionalProp1:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            binding: "string"
+            produces:
+            - "string"
+        autoRef:
+        - from: "string"
+          to: "string"
+          using: "sync-state"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        volumes:
+        - "string"
+        servicePorts:
+        - "string"
+        healthCheck: "string"
+      additionalProp3:
+        image: "string"
+        channelsPort: 0
         incoming:
-          resources:
-            ref: outbox.pages
-      webserver:
+          additionalProp1:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp2:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp3:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+        outgoing:
+          additionalProp1:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            binding: "string"
+            produces:
+            - "string"
+        autoRef:
+        - from: "string"
+          to: "string"
+          using: "sync-state"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        volumes:
+        - "string"
+        servicePorts:
+        - "string"
+        healthCheck: "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+  additionalProp2:
+    type: "string"
+    containers:
+      additionalProp1:
+        image: "string"
+        channelsPort: 0
+        incoming:
+          additionalProp1:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp2:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp3:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+        outgoing:
+          additionalProp1:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            binding: "string"
+            produces:
+            - "string"
+        autoRef:
+        - from: "string"
+          to: "string"
+          using: "sync-state"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        volumes:
+        - "string"
+        servicePorts:
+        - "string"
+        healthCheck: "string"
+      additionalProp2:
+        image: "string"
+        channelsPort: 0
+        incoming:
+          additionalProp1:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp2:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp3:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+        outgoing:
+          additionalProp1:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            binding: "string"
+            produces:
+            - "string"
+        autoRef:
+        - from: "string"
+          to: "string"
+          using: "sync-state"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        volumes:
+        - "string"
+        servicePorts:
+        - "string"
+        healthCheck: "string"
+      additionalProp3:
+        image: "string"
+        channelsPort: 0
+        incoming:
+          additionalProp1:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp2:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp3:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+        outgoing:
+          additionalProp1:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            binding: "string"
+            produces:
+            - "string"
+        autoRef:
+        - from: "string"
+          to: "string"
+          using: "sync-state"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        volumes:
+        - "string"
+        servicePorts:
+        - "string"
+        healthCheck: "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+  additionalProp3:
+    type: "string"
+    containers:
+      additionalProp1:
+        image: "string"
+        channelsPort: 0
+        incoming:
+          additionalProp1:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp2:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp3:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+        outgoing:
+          additionalProp1:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            binding: "string"
+            produces:
+            - "string"
+        autoRef:
+        - from: "string"
+          to: "string"
+          using: "sync-state"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        volumes:
+        - "string"
+        servicePorts:
+        - "string"
+        healthCheck: "string"
+      additionalProp2:
+        image: "string"
+        channelsPort: 0
+        incoming:
+          additionalProp1:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp2:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp3:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+        outgoing:
+          additionalProp1:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            binding: "string"
+            produces:
+            - "string"
+        autoRef:
+        - from: "string"
+          to: "string"
+          using: "sync-state"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        volumes:
+        - "string"
+        servicePorts:
+        - "string"
+        healthCheck: "string"
+      additionalProp3:
+        image: "string"
+        channelsPort: 0
+        incoming:
+          additionalProp1:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp2:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+          additionalProp3:
+            binding: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+            maxInflightMessages: 0
+            shared: true
+            sync: "string"
+        outgoing:
+          additionalProp1:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            binding: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            binding: "string"
+            produces:
+            - "string"
+        autoRef:
+        - from: "string"
+          to: "string"
+          using: "sync-state"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        volumes:
+        - "string"
+        servicePorts:
+        - "string"
+        healthCheck: "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+ingestion:
+  additionalProp1:
+    descriptor: "string"
+    containers:
+      additionalProp1:
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
         volumesFrom:
-          configs: 
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp2:
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp3:
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+  additionalProp2:
+    descriptor: "string"
+    containers:
+      additionalProp1:
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp2:
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp3:
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+  additionalProp3:
+    descriptor: "string"
+    containers:
+      additionalProp1:
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp2:
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp3:
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+sources:
+  additionalProp1:
+    outgoing:
+    - ref: "string"
+      produces:
+      - "string"
+  additionalProp2:
+    outgoing:
+    - ref: "string"
+      produces:
+      - "string"
+  additionalProp3:
+    outgoing:
+    - ref: "string"
+      produces:
+      - "string"
+processing:
+  additionalProp1:
+    descriptor: "string"
+    containers:
+      additionalProp1:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp2:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp3:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+  additionalProp2:
+    descriptor: "string"
+    containers:
+      additionalProp1:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp2:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp3:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+  additionalProp3:
+    descriptor: "string"
+    containers:
+      additionalProp1:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp2:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp3:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+edge:
+  additionalProp1:
+    descriptor: "string"
+    containers:
+      additionalProp1:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp2:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp3:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+  additionalProp2:
+    descriptor: "string"
+    containers:
+      additionalProp1:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp2:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp3:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+  additionalProp3:
+    descriptor: "string"
+    containers:
+      additionalProp1:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp2:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+      additionalProp3:
+        incoming:
+          additionalProp1:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp2:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+          additionalProp3:
+            ref: "string"
+            consumes:
+            - "string"
+            read: "all-always"
+            processOnlyLatest: true
+        outgoing:
+          additionalProp1:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp2:
+            ref: "string"
+            produces:
+            - "string"
+          additionalProp3:
+            ref: "string"
+            produces:
+            - "string"
+        environment:
+          additionalProp1: "string"
+          additionalProp2: "string"
+          additionalProp3: "string"
+        environmentFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        volumes:
+        - "string"
+        volumesFrom:
+          configs:
+          - "string"
+          secrets:
+          - "string"
+        servicePorts:
+        - "string"
+    volumes:
+      additionalProp1:
+        size: "stringstring"
+        persistent: true
+      additionalProp2:
+        size: "stringstring"
+        persistent: true
+      additionalProp3:
+        size: "stringstring"
+        persistent: true
+gateways:
+- name: "string"
+  listeners:
+  - allowedRoutes:
+      kinds:
+      - kind: "string"
+        group: "string"
+      namespaces:
+        from: "string"
+        selector:
+          matchExpressions:
+          - key: "string"
+            operator: "string"
+            values:
+            - "string"
+          matchLabels:
+            additionalProp1: "string"
+            additionalProp2: "string"
+            additionalProp3: "string"
+    hostname: "string"
+    name: "string"
+    port: 0
+    protocol: "string"
+    tls:
+      certificateRefs:
+      - kind: "string"
+        group: "string"
+        name: "string"
+        namespace: "string"
+      frontendValidation:
+        caCertificateRefs:
+        - kind: "string"
+          group: "string"
+          name: "string"
+          namespace: "string"
+      mode: "string"
+      options:
+        additionalProp1: "string"
+        additionalProp2: "string"
+        additionalProp3: "string"
+  httpRoutes:
+  - name: "string"
+    hostnames:
+    - "string"
+    parentRefs:
+    - sectionName: "string"
+    rules:
+    - backendRefs:
+      - kind: "string"
+        filters:
+        - extensionRef:
+            kind: "string"
+            group: "string"
+            name: "string"
+          requestHeaderModifier:
+            add:
+            - name: "string"
+              value: "string"
+            remove:
+            - "string"
+            set:
+            - name: "string"
+              value: "string"
+          requestMirror:
+            backendRef:
+              kind: "string"
+              group: "string"
+              name: "string"
+              namespace: "string"
+              port: 0
+            fraction:
+              denominator: 0
+              numerator: 0
+            percent: 0
+          requestRedirect:
+            hostname: "string"
+            path:
+              replaceFullPath: "string"
+              replacePrefixMatch: "string"
+              type: "string"
+            port: 0
+            scheme: "string"
+            statusCode: 0
+          responseHeaderModifier:
+            add:
+            - name: "string"
+              value: "string"
+            remove:
+            - "string"
+            set:
+            - name: "string"
+              value: "string"
+          type: "string"
+          urlRewrite:
+            hostname: "string"
+            path:
+              replaceFullPath: "string"
+              replacePrefixMatch: "string"
+              type: "string"
+        group: "string"
+        name: "string"
+        namespace: "string"
+        port: 0
+        weight: 0
+      filters:
+      - extensionRef:
+          kind: "string"
+          group: "string"
+          name: "string"
+        requestHeaderModifier:
+          add:
+          - name: "string"
+            value: "string"
+          remove:
+          - "string"
+          set:
+          - name: "string"
+            value: "string"
+        requestMirror:
+          backendRef:
+            kind: "string"
+            group: "string"
+            name: "string"
+            namespace: "string"
+            port: 0
+          fraction:
+            denominator: 0
+            numerator: 0
+          percent: 0
+        requestRedirect:
+          hostname: "string"
+          path:
+            replaceFullPath: "string"
+            replacePrefixMatch: "string"
+            type: "string"
+          port: 0
+          scheme: "string"
+          statusCode: 0
+        responseHeaderModifier:
+          add:
+          - name: "string"
+            value: "string"
+          remove:
+          - "string"
+          set:
+          - name: "string"
+            value: "string"
+        type: "string"
+        urlRewrite:
+          hostname: "string"
+          path:
+            replaceFullPath: "string"
+            replacePrefixMatch: "string"
+            type: "string"
+      matches:
+      - headers:
+        - name: "string"
+          type: "string"
+          value: "string"
+        method: "string"
+        path:
+          type: "string"
+          value: "string"
+        queryParams:
+        - name: "string"
+          type: "string"
+          value: "string"
+      name: "string"
+      retry:
+        attempts: 0
+        backoff: "string"
+        codes:
+        - 0
+      sessionPersistence:
+        absoluteTimeout: "string"
+        cookieConfig:
+          lifetimeType: "string"
+        idleTimeout: "string"
+        sessionName: "string"
+        type: "string"
+      timeouts:
+        backendRequest: "string"
+        request: "string"
