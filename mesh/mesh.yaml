@@ -1,127 +1,95 @@
+---
 descriptors:
   relay:
-    type: processing
+    type: "processing"
     containers:
       service:
         incoming:
           events: {}
         outgoing:
           relayed-events: {}
-
- 
   web-server-sink:
-    type: edge 
+    type: "edge"
     containers:
       sink:
-        image: ghcr.io/streamx-com/streamx-blueprints/web-server-sink:3.0.7-jvm
+        image: "ghcr.io/streamx-com/streamx-blueprints/web-server-sink:3.0.8-jvm"
         incoming:
           resources: {}
         environment:
-          STREAMX_BLUEPRINTS_WEB_SERVER_SINK_STORAGE_ROOT_DIRECTORY: /srv/www
+          STREAMX_BLUEPRINTS_WEB_SERVER_SINK_STORAGE_ROOT_DIRECTORY: "/srv/www"
         volumes:
-          - repository-volume:/srv/www
+        - "repository-volume:/srv/www"
       webserver:
-        image: docker.io/library/nginx:1.26.0
-        servicePorts:
-          - 80:80
+        image: "docker.io/library/nginx:1.26.0"
         volumes:
-          - repository-volume:/usr/share/nginx/html
-        healthCheck: null
-    volumes: 
+        - "repository-volume:/usr/share/nginx/html"
+        servicePorts:
+        - "80:80"
+    volumes:
       repository-volume: {}
-
-sources:
-  resources-source:
-    outgoing:
-      - ref: inbox.pages
-        produces:
-          - com.streamx.blueprints.page.published.v1
-          - com.streamx.blueprints.page.unpublished.v1
-
-gateways:
-  - httpRoutes:
-      - name: ingestion
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /ingest
-            backendRefs:
-              - name: ingestion/rest-ingestion
-                port: 8080
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-      - name: web
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /web
-            backendRefs:
-              - name: edge/web-server-sink
-                port: 8083
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-
 ingestion:
   rest-ingestion:
     containers:
-      proxy:
-        environment:
+      proxy: {}
+sources:
+  resources-source:
+    outgoing:
+    - ref: "inbox.pages"
+      produces:
+      - "com.streamx.blueprints.page.published.v1"
+      - "com.streamx.blueprints.page.unpublished.v1"
 processing:
   pages-relay:
-    descriptor: relay
+    descriptor: "relay"
     containers:
       service:
         incoming:
           events:
-            ref: inbox.pages
+            ref: "inbox.pages"
         outgoing:
           relayed-events:
-            ref: outbox.pages
-
+            ref: "outbox.pages"
 edge:
   web-server-sink-service:
-    descriptor: web-server-sink
+    descriptor: "web-server-sink"
     containers:
       sink:
         incoming:
           resources:
-            ref: outbox.pages
+            ref: "outbox.pages"
+        environment:
+          A: "1"
       webserver:
-        volumesFrom:
-          configs: 
-
-deploymentConfig:
-  defaults:
-    global:
-      podDisruptionBudget:
-        enabled: true
-        minAvailable: 1
-    edge:
-      replicas: 1
-      podDisruptionBudget:
-        enabled: true
-        maxUnavailable: 2
-    processing:
-      replicas: 2
-      podDisruptionBudget:
-        enabled: true
-        maxUnavailable: 1
-
-
-
-
-
-
-
-
-
+        volumesFrom: {}
+gateways:
+- httpRoutes:
+  - name: "ingestion"
+    rules:
+    - backendRefs:
+      - name: "ingestion/rest-ingestion"
+        port: 8080
+      filters:
+      - type: "URLRewrite"
+        urlRewrite:
+          path:
+            replacePrefixMatch: "/"
+            type: "ReplacePrefixMatch"
+      matches:
+      - path:
+          type: "PathPrefix"
+          value: "/ingest"
+  - name: "web"
+    rules:
+    - backendRefs:
+      - name: "edge/web-server-sink"
+        port: 8083
+      filters:
+      - type: "URLRewrite"
+        urlRewrite:
+          path:
+            replacePrefixMatch: "/"
+            type: "ReplacePrefixMatch"
+      matches:
+      - path:
+          type: "PathPrefix"
+          value: "/web"
