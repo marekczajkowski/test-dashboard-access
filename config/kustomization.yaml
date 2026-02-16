@@ -1,6 +1,0 @@
-resources: []
-
-configMapGenerator:
-  - name: app-config
-    files:
-      - application.properties
