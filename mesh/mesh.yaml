@@ -57,6 +57,8 @@ edge:
         incoming:
           resources:
             ref: "outbox.pages"
+        environment:
+          A: "1"
       webserver:
         volumesFrom: {}
 gateways:
