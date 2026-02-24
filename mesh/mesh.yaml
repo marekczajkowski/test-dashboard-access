@@ -12,11 +12,17 @@ descriptors:
     type: "edge"
     containers:
       sink:
-        image: "ghcr.io/streamx-com/streamx-blueprints/web-server-sink:3.0.8-jvm"
+        image: "ghcr.io/streamx-com/streamx-blueprints/web-server-sink:3.0.7-jvm"
         incoming:
           resources: {}
         environment:
           STREAMX_BLUEPRINTS_WEB_SERVER_SINK_STORAGE_ROOT_DIRECTORY: "/srv/www"
+        environmentFrom:
+          secrets:
+            - secret.properties
+            - test/secret.properties
+          configs:
+            - test.properties
         volumes:
         - "repository-volume:/srv/www"
       webserver:
