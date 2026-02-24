@@ -17,12 +17,6 @@ descriptors:
           resources: {}
         environment:
           STREAMX_BLUEPRINTS_WEB_SERVER_SINK_STORAGE_ROOT_DIRECTORY: "/srv/www"
-        environmentFrom:
-          secrets:
-            - secret.properties
-            - test/secret.properties
-          configs:
-            - test.properties
         volumes:
         - "repository-volume:/srv/www"
       webserver:
@@ -65,6 +59,12 @@ edge:
             ref: "outbox.pages"
         environment:
           A: "1"
+        environmentFrom:
+          secrets:
+            - secret.properties
+            - test/secret.properties
+          configs:
+            - test.properties
       webserver:
         volumesFrom: {}
 gateways:
