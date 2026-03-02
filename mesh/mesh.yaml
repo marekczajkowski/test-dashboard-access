@@ -15,9 +15,6 @@ descriptors:
         image: "ghcr.io/streamx-com/streamx-blueprints/web-server-sink:3.0.8-jvm"
         incoming:
           resources: {}
-        environmentFrom:
-          configs:
-            - not-esits.properties
         environment:
           STREAMX_BLUEPRINTS_WEB_SERVER_SINK_STORAGE_ROOT_DIRECTORY: "/srv/www"
         volumes:
@@ -62,6 +59,10 @@ edge:
             ref: "outbox.pages"
         environment:
           A: "1"
+        environmentFrom:
+          configs:
+            - not-esits.properties
+            - empty.properties
       webserver:
         volumesFrom: {}
 gateways:
