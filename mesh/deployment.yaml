@@ -1,0 +1,47 @@
+edge:
+  web-server-sink-service:
+    replicas: 2
+    stateful: true
+    probes:
+      startup:
+        httpGet:
+          path: /q/health
+          port: 8080
+        initialDelaySeconds: 10
+        timeoutSeconds: 2
+        periodSeconds: 10
+        successThreshold: 1
+        failureThreshold: 120
+    containers:
+      webserver:
+        probes:
+          readiness:
+            httpGet:
+              path: /health
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          liveness:
+            httpGet:
+              path: /health
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          startup:
+            httpGet:
+              path: /health
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
