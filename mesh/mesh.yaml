@@ -105,5 +105,5 @@ edge:
           configs:
             - nginx_conf/default.conf:/etc/nginx/conf.d/default.conf
             - nginx_conf/ds-pl.conf:/etc/nginx/conf.d/ds-pl.conf
-            - nginx_conf/includes/compression.conf:/etc/nginx/includes/compression.conf
-            - nginx_conf/includes/ensure-https.conf:/etc/nginx/includes/ensure-https.conf
+            - nginx_conf/includes/compression.conf:/etc/nginx/conf.d/includes/compression.conf
+            - nginx_conf/includes/ensure-https.conf:/etc/nginx/conf.d/includes/ensure-https.conf
