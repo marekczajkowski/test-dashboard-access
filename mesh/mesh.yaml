@@ -95,7 +95,7 @@ edge:
       sink:
         incoming:
           resources:
-            ref: inbox.pages,inbox.assets,inbox.web-resources,outbox.web-resources
+            ref: inbox.pages,inbox.assets,inbox.web-resources
         environmentFrom:
           configs:
             - web-server-sink.properties
