@@ -6,6 +6,29 @@ default:
     STREAMX_BLUEPRINTS_KEY_VALUE_STATE_REPOSITORY_ROCKSDB_PATH: /var/lib/rocksdb
 
 descriptors:
+  relay:
+    type: processing
+    containers:
+      service:
+        incoming:
+          events: {}
+        outgoing:
+          relayed-events: {}
+          
+  sitemap-generator:
+    type: processing
+    containers:
+      processor:
+        image: ghcr.io/streamx-com/streamx-blueprints/sitemap-generator:3.0.13-native
+        incoming:
+          incoming-pages: {}
+        outgoing:
+          outgoing-sitemaps: {}
+        autoRef:
+          - from: incoming-pages
+            to: incoming-pages-state
+            using: sync-state
+            
   web-server-sink:
     type: edge
     volumes:
@@ -74,6 +97,17 @@ ingestion:
           STREAMX_SOURCES_WEBSIGHT_ACCEPT_IAT_FROM: "1704067200"
 
 processing:
+  web-resources-relay:
+    descriptor: relay
+    containers:
+      service:
+        incoming:
+          events:
+            ref: inbox.web-resources
+        outgoing:
+          relayed-events:
+            ref: relay.web-resources
+          
   sitemap-generator:
     descriptor: sitemap-generator
     containers:
@@ -95,7 +129,7 @@ edge:
       sink:
         incoming:
           resources:
-            ref: inbox.pages,inbox.assets,inbox.web-resources
+            ref: inbox.pages,inbox.assets,inbox.web-resources,relay.web-resources
         environmentFrom:
           configs:
             - web-server-sink.properties
