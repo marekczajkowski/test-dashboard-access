@@ -40,7 +40,7 @@ descriptors:
         incoming:
           resources: {}
         servicePorts:
-          - 8081:8080
+          - 8083:8080
         volumes:
           - repository-volume:/srv/www
         environment:
