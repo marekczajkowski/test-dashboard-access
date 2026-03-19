@@ -40,7 +40,7 @@ descriptors:
         incoming:
           resources: {}
         servicePorts:
-          - 8083:8080
+          - 8081:8080
         volumes:
           - repository-volume:/srv/www
         environment:
@@ -117,7 +117,7 @@ processing:
             ref: inbox.pages
         outgoing:
           outgoing-sitemaps:
-            ref: outbox.web-resources
+            ref: relay.web-resources
         environment:
           STREAMX_BLUEPRINTS_SITEMAP_GENERATOR_BASE_URL: https://ds.pl
           STREAMX_BLUEPRINTS_SITEMAP_GENERATOR_OUTPUT_KEY: /sitemap.xml
