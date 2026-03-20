@@ -1,7 +1,5 @@
 default:
   environment:
-    # Favor throughput and connection quality over latency
-    PULSAR_CLIENT_USETCPNODELAY: "false"
     STREAMX_BLUEPRINTS_KEY_VALUE_STATE_REPOSITORY_BACKEND: rocksdb
     STREAMX_BLUEPRINTS_KEY_VALUE_STATE_REPOSITORY_ROCKSDB_PATH: /var/lib/rocksdb
 
@@ -14,9 +12,12 @@ descriptors:
           events: {}
         outgoing:
           relayed-events: {}
-          
+
   sitemap-generator:
     type: processing
+    volumes:
+      rocksdb:
+        size: 5Gi
     containers:
       processor:
         image: ghcr.io/streamx-com/streamx-blueprints/sitemap-generator:3.0.13-native
@@ -28,7 +29,9 @@ descriptors:
           - from: incoming-pages
             to: incoming-pages-state
             using: sync-state
-            
+        volumes:
+          - rocksdb:/var/lib/rocksdb
+  
   web-server-sink:
     type: edge
     volumes:
@@ -92,6 +95,9 @@ ingestion:
   rest-ingestion:
     containers:
       proxy:
+        environmentFrom:
+          configs:
+            - rest-ingestion.properties
         environment:
           # Ensures that generated tokens would work between cluster restarts
           STREAMX_SOURCES_WEBSIGHT_ACCEPT_IAT_FROM: "1704067200"
@@ -106,8 +112,30 @@ processing:
             ref: inbox.web-resources
         outgoing:
           relayed-events:
-            ref: relay.web-resources
-          
+            ref: outbox.web-resources
+
+  assets-relay:
+    descriptor: relay
+    containers:
+      service:
+        incoming:
+          events:
+            ref: inbox.assets
+        outgoing:
+          relayed-events:
+            ref: outbox.assets
+
+  pages-relay:
+    descriptor: relay
+    containers:
+      service:
+        incoming:
+          events:
+            ref: inbox.pages
+        outgoing:
+          relayed-events:
+            ref: outbox.pages
+
   sitemap-generator:
     descriptor: sitemap-generator
     containers:
@@ -117,10 +145,11 @@ processing:
             ref: inbox.pages
         outgoing:
           outgoing-sitemaps:
-            ref: relay.web-resources
+            ref: outbox.web-resources
         environment:
-          STREAMX_BLUEPRINTS_SITEMAP_GENERATOR_BASE_URL: https://ds.pl
-          STREAMX_BLUEPRINTS_SITEMAP_GENERATOR_OUTPUT_KEY: /sitemap.xml
+          STREAMX_BLUEPRINTS_SITEMAP_GENERATOR_BASE-URL: https://ds.pl
+          STREAMX_BLUEPRINTS_SITEMAP_GENERATOR_OUTPUT-KEY: /sitemap.xml
+          STREAMX_BLUEPRINTS_SITEMAP_GENERATOR_OUTPUT-TYPE: web-resource/sitemap
 
 edge:
   web-server-sink:
@@ -129,15 +158,13 @@ edge:
       sink:
         incoming:
           resources:
-            ref: inbox.pages,inbox.assets,inbox.web-resources,relay.web-resources
+            ref: outbox.pages,outbox.assets,outbox.web-resources
         environmentFrom:
           configs:
             - web-server-sink.properties
-
       webserver:
         volumesFrom:
           configs:
-            - nginx_conf/default.conf:/etc/nginx/conf.d/default.conf
-            - nginx_conf/ds-pl.conf:/etc/nginx/conf.d/ds-pl.conf
+            - nginx_conf/ds-pl.conf:/etc/nginx/conf.d/default.conf
             - nginx_conf/includes/compression.conf:/etc/nginx/conf.d/includes/compression.conf
             - nginx_conf/includes/ensure-https.conf:/etc/nginx/conf.d/includes/ensure-https.conf
