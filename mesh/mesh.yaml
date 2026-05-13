@@ -128,9 +128,6 @@ edge:
         incoming:
           resources:
             ref: outbox.pages,outbox.web-resources
-        environmentFrom:
-          configs:
-            - web-server-sink.properties
 
       webserver:
         volumesFrom:
