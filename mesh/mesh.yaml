@@ -135,4 +135,4 @@ edge:
       webserver:
         volumesFrom:
           configs:
-            - nginx_conf/nginx.conf:/etc/nginx/conf.d/default.conf
+            - nginx_conf/demo.conf:/etc/nginx/conf.d/default.conf
