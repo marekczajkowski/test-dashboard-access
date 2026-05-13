@@ -58,13 +58,6 @@ networking:
           backendRefs:
             - name: edge/web-server-sink
               port: 8084
-        - matches:
-            - path:
-                type: PathPrefix
-                value: /api
-          backendRefs:
-            - name: edge/openai-rag-sink
-              port: 8085
 sources:
   cli:
     outgoing:
