@@ -114,3 +114,15 @@ processing:
             ref: outbox.data
 
 edge:
+  web-server-sink:
+    descriptor: web-server-sink
+    containers:
+      sink:
+        incoming:
+          resources:
+            ref: outbox.pages,outbox.web-resources
+
+      webserver:
+        volumesFrom:
+          configs:
+            - nginx_conf/demo.conf:/etc/nginx/conf.d/default.conf
