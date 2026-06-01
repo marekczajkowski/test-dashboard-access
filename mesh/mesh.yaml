@@ -263,7 +263,7 @@ descriptors:
         image: ghcr.io/streamx-com/streamx-blueprints/web-server-sink:3.0.19-native
         incoming:
           resources:
-            initState: delta
+            initState: replay
         servicePorts:
           - 8083:8080
         volumes:
