@@ -1,0 +1,5 @@
+clusters:
+  edge-us-east:
+    enabled: true
+  processing-eu-central:
+    enabled: true
