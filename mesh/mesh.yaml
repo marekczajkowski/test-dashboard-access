@@ -50,8 +50,6 @@ networking:
             - name: ingestion/rest-ingestion
               port: 8080
     web-server-route:
-      hostnames:
-        - "blueprint-search.local"
       rules:
         - matches:
             - path:
