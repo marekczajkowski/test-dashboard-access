@@ -80,6 +80,16 @@ ingestion:
       proxy: {}
 
 processing:
+  pages-relay:
+    descriptor: relay
+    containers:
+      service:
+        incoming:
+          events:
+            ref: inbox.pages
+        outgoing:
+          relayed-events:
+            ref: outbox.pages
 
 edge:
   web-server-sink:
