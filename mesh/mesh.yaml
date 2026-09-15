@@ -96,7 +96,7 @@ edge:
     descriptor: web-server-sink
     containers:
       sink:
-        incoming:
+        incoming: 
           resources:
             ref: outbox.pages,outbox.web-resources,outbox.assets
 
