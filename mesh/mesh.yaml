@@ -93,7 +93,7 @@ processing:
 
 edge:
   web-server-sink:
-    descriptor: web-server-sink
+    descriptor: web-server-sink 
     containers:
       sink:
         incoming:
