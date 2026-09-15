@@ -90,7 +90,7 @@ processing:
         outgoing:
           relayed-events:
             ref: outbox.pages
-
+ 
 edge:
   web-server-sink:
     descriptor: web-server-sink
