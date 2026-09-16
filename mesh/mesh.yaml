@@ -99,7 +99,7 @@ edge:
         incoming:  
           resources:
             ref: outbox.pages,outbox.web-resources,outbox.assets
-
+ 
       webserver:
         volumesFrom:
           configs:
