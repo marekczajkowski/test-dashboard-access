@@ -13,6 +13,119 @@ descriptors:
         outgoing:
           relayed-events: {}
 
+  data-collector:
+    type: processing
+    volumes:
+      rocksdb:
+        size: 5Gi
+    containers:
+      processor:
+        image: ghcr.io/streamx-com/streamx-blueprints/data-collector:3.0.19-native
+        incoming:
+          data: {}
+        outgoing:
+          collected-data: {}
+          web-resources: {}
+        autoRef:
+          - from: data
+            to: data-state
+            using: sync-state
+        volumes:
+          - rocksdb:/var/lib/rocksdb
+
+  json-aggregator:
+    type: processing
+    volumes:
+      rocksdb:
+        size: 5Gi
+    containers:
+      processor:
+        image: ghcr.io/streamx-com/streamx-blueprints/json-aggregator:3.0.19-native
+        incoming:
+          data: {}
+          multivalued-data: {}
+        outgoing:
+          aggregated-data: {}
+          aggregated-multivalued-data: {}
+        autoRef:
+          - from: data
+            to: data-state
+            using: sync-state
+          - from: multivalued-data
+            to: multivalued-data-state
+            using: sync-state
+        volumes:
+          - rocksdb:/var/lib/rocksdb
+
+  event-converter:
+    type: processing
+    containers:
+      processor:
+        image: ghcr.io/streamx-com/streamx-blueprints/event-converter:3.0.19-native
+        incoming:
+          resources: {}
+        outgoing:
+          indexable-resources: {}
+
+  rendering-engine:
+    type: processing
+    volumes:
+      rocksdb:
+        size: 5Gi
+    containers:
+      processor:
+        image: ghcr.io/streamx-com/streamx-blueprints/rendering-engine:3.0.19-native
+        incoming:
+          data: {}
+          renderers: {}
+          rendering-contexts: {}
+        outgoing:
+          pages: {}
+          fragments: {}
+        autoRef:
+          - from: outgoing-rendering-requests
+            to: incoming-rendering-requests
+            using: internal-relay
+          - from: data
+            to: data-state
+            using: sync-state
+          - from: renderers
+            to: renderers-state
+            using: sync-state
+          - from: rendering-contexts
+            to: rendering-contexts-state
+            using: sync-state
+        volumes:
+          - rocksdb:/var/lib/rocksdb
+
+  composition-engine:
+    type: processing
+    volumes:
+      rocksdb:
+        size: 5Gi
+    containers:
+      processor:
+        image: ghcr.io/streamx-com/streamx-blueprints/composition-engine:3.0.19-native
+        incoming:
+          layouts: {}
+          compositions: {}
+        outgoing:
+          pages: {}
+        autoRef:
+          - from: outgoing-page-compose-requests
+            to: incoming-page-compose-requests
+            using: internal-relay
+          - from: layouts
+            to: layouts-state
+            using: sync-state
+          - from: compositions
+            to: compositions-state
+            using: sync-state
+        volumes:
+          - rocksdb:/var/lib/rocksdb
+
+
+
   web-server-sink:
     type: edge
     volumes:
@@ -21,7 +134,7 @@ descriptors:
         persistent: true
     containers:
       sink:
-        image: ghcr.io/streamx-com/streamx-blueprints/web-server-sink:3.0.18-native
+        image: ghcr.io/streamx-com/streamx-blueprints/web-server-sink:3.0.19-native
         incoming:
           resources:
             initState: delta
@@ -49,7 +162,7 @@ networking:
           backendRefs:
             - name: ingestion/rest-ingestion
               port: 8080
-    web-server-route:
+    edge-route:
       rules:
         - matches:
             - path:
@@ -59,12 +172,16 @@ networking:
             - name: edge/web-server-sink
               port: 8084
 sources:
-  cli:
+  script:
     outgoing:
-      - ref: inbox.pages
+      - ref: inbox.fragments
         produces:
-          - com.streamx.blueprints.page.published.v1
-          - com.streamx.blueprints.page.unpublished.v1
+          - com.streamx.blueprints.fragment.published.v1
+          - com.streamx.blueprints.fragment.unpublished.v1
+      - ref: inbox.assets
+        produces:
+          - com.streamx.blueprints.asset.published.v1
+          - com.streamx.blueprints.asset.unpublished.v1
       - ref: inbox.web-resources
         produces:
           - com.streamx.blueprints.web-resource.published.v1
@@ -73,35 +190,142 @@ sources:
         produces:
           - com.streamx.blueprints.data.published.v1
           - com.streamx.blueprints.data.unpublished.v1
+      - ref: inbox.renderers
+        produces:
+          - com.streamx.blueprints.renderer.published.v1
+          - com.streamx.blueprints.renderer.unpublished.v1
+      - ref: inbox.rendering-contexts
+        produces:
+          - com.streamx.blueprints.rendering-context.published.v1
+          - com.streamx.blueprints.rendering-context.unpublished.v1
+      - ref: inbox.layouts
+        produces:
+          - com.streamx.blueprints.layout.published.v1
+          - com.streamx.blueprints.layout.unpublished.v1
+      - ref: inbox.compositions
+        produces:
+          - com.streamx.blueprints.composition.published.v1
+          - com.streamx.blueprints.composition.unpublished.v1
 
 ingestion:
   rest-ingestion:
     containers:
-      proxy: {}
+      proxy:
+        environmentFrom:
+          configs:
+            - rest-ingestion.properties
 
 processing:
-  pages-relay:
+  assets-relay:
     descriptor: relay
     containers:
       service:
         incoming:
           events:
-            ref: inbox.pages
+            ref: inbox.assets
         outgoing:
           relayed-events:
+            ref: outbox.assets
+
+  fragments-relay:
+    descriptor: relay
+    containers:
+      service:
+        incoming:
+          events:
+            ref: inbox.fragments
+        outgoing:
+          relayed-events:
+            ref: outbox.fragments
+
+  web-resources-relay:
+    descriptor: relay
+    containers:
+      service:
+        incoming:
+          events:
+            ref: inbox.web-resources
+        outgoing:
+          relayed-events:
+            ref: outbox.web-resources
+
+  data-collector:
+    descriptor: data-collector
+    containers:
+      processor:
+        incoming:
+          data:
+            ref: relay.aggregated-data,relay.collected-data
+        outgoing:
+          collected-data:
+            ref: relay.collected-data
+          web-resources:
+            ref: outbox.web-resources
+        environmentFrom:
+          configs:
+            - data-collector.properties
+
+  json-aggregator:
+    descriptor: json-aggregator
+    containers:
+      processor:
+        incoming:
+          data:
+            ref: inbox.data
+          multivalued-data:
+            ref: inbox.data
+        outgoing:
+          aggregated-data:
+            ref: relay.aggregated-data
+          aggregated-multivalued-data:
+            ref: inbox.data
+        environmentFrom:
+          configs:
+            - json-aggregator.properties
+
+  rendering-engine:
+    descriptor: rendering-engine
+    containers:
+      processor:
+        incoming:
+          data:
+            ref: relay.aggregated-data,relay.collected-data
+          renderers:
+            ref: inbox.renderers
+          rendering-contexts:
+            ref: inbox.rendering-contexts
+        outgoing:
+          pages:
             ref: outbox.pages
- 
+          fragments:
+            ref: outbox.fragments
+
+  composition-engine:
+    descriptor: composition-engine
+    containers:
+      processor:
+        incoming:
+          layouts:
+            ref: inbox.layouts
+          compositions:
+            ref: inbox.compositions
+        outgoing:
+          pages:
+            ref: outbox.pages
+
 edge:
   web-server-sink:
-    descriptor: web-server-sink 
+    descriptor: web-server-sink
     containers:
       sink:
-        incoming:  
+        incoming:
           resources:
-            ref: outbox.pages,outbox.web-resources,outbox.assets
- 
-      webserver:
-        volumesFrom: 
+            ref: outbox.pages,outbox.fragments,outbox.assets,outbox.web-resources
+        environmentFrom:
           configs:
-            - nginx_conf/demo.conf:/etc/nginx/conf.d/default.conf
- 
+            - web-server-sink.properties
+
+      webserver:
+        volumesFrom:
+          configs:
+            - nginx_conf/nginx.conf:/etc/nginx/conf.d/default.conf
