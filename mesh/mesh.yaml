@@ -56,6 +56,24 @@ descriptors:
             using: sync-state
         volumes:
           - rocksdb:/var/lib/rocksdb
+  sitemap-generator:
+    type: processing
+    volumes:
+      rocksdb:
+        size: 5Gi
+    containers:
+      processor:
+        image: ghcr.io/streamx-com/streamx-blueprints/sitemap-generator:3.0.19-native
+        incoming:
+          incoming-pages: {}
+        outgoing:
+          outgoing-sitemaps: {}
+        autoRef:
+          - from: incoming-pages
+            to: incoming-pages-state
+            using: sync-state
+        volumes:
+          - rocksdb:/var/lib/rocksdb
 
   event-converter:
     type: processing
@@ -216,89 +234,6 @@ ingestion:
             - rest-ingestion.properties
 
 processing:
-  assets-relay:
-    descriptor: relay
-    containers:
-      service:
-        incoming:
-          events:
-            ref: inbox.assets
-        outgoing:
-          relayed-events:
-            ref: outbox.assets
-
-  fragments-relay:
-    descriptor: relay
-    containers:
-      service:
-        incoming:
-          events:
-            ref: inbox.fragments
-        outgoing:
-          relayed-events:
-            ref: outbox.fragments
-
-  web-resources-relay:
-    descriptor: relay
-    containers:
-      service:
-        incoming:
-          events:
-            ref: inbox.web-resources
-        outgoing:
-          relayed-events:
-            ref: outbox.web-resources
-
-  data-collector:
-    descriptor: data-collector
-    containers:
-      processor:
-        incoming:
-          data:
-            ref: relay.aggregated-data,relay.collected-data
-        outgoing:
-          collected-data:
-            ref: relay.collected-data
-          web-resources:
-            ref: outbox.web-resources
-        environmentFrom:
-          configs:
-            - data-collector.properties
-
-  json-aggregator:
-    descriptor: json-aggregator
-    containers:
-      processor:
-        incoming:
-          data:
-            ref: inbox.data
-          multivalued-data:
-            ref: inbox.data
-        outgoing:
-          aggregated-data:
-            ref: relay.aggregated-data
-          aggregated-multivalued-data:
-            ref: inbox.data
-        environmentFrom:
-          configs:
-            - json-aggregator.properties
-
-  rendering-engine:
-    descriptor: rendering-engine
-    containers:
-      processor:
-        incoming:
-          data:
-            ref: relay.aggregated-data,relay.collected-data
-          renderers:
-            ref: inbox.renderers
-          rendering-contexts:
-            ref: inbox.rendering-contexts
-        outgoing:
-          pages:
-            ref: outbox.pages
-          fragments:
-            ref: outbox.fragments
 
   composition-engine:
     descriptor: composition-engine
@@ -311,7 +246,21 @@ processing:
             ref: inbox.compositions
         outgoing:
           pages:
-            ref: outbox.pages
+            ref: relay.pages
+
+  sitemap-generator:
+    descriptor: sitemap-generator
+    containers:
+      processor:
+        incoming:
+          incoming-pages:
+            ref: relay.pages
+        outgoing:
+          outgoing-sitemaps:
+            ref: outbox.web-resources
+        environmentFrom:
+          configs:
+            - sitemap-generator.properties
 
 edge:
   web-server-sink:
