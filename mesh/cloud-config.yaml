@@ -1,3 +1,19 @@
+global:
+  services:
+    ingestion:
+      rest-ingestion:
+        replicas: 1
+    processing:
+      composition-engine:
+        stateful: true
+        replicas: 1
+      sitemap-generator:
+        stateful: true
+        replicas: 1
+    edge:
+      web-server-sink:
+        stateful: true
+        replicas: 1
 clusters:
   edge-us-east:
     enabled: true
