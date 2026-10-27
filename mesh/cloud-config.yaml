@@ -1,4 +1,6 @@
 ---
+domains:
+- "www.wp.pl"
 global: {}
 clusters:
   ap-southeast-sin-edge:
