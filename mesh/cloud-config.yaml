@@ -1,6 +1,6 @@
 ---
 domains:
-- "www.google.pl"
+- "www.google.com"
 global: {}
 clusters:
   ap-southeast-sin-edge:
