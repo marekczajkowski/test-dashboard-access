@@ -1,5 +1,6 @@
+---
+global: {}
 clusters:
-  edge-us-east:
+  ap-southeast-sin-edge:
     enabled: true
-  processing-eu-central:
-    enabled: true
+    overlay: {}
