@@ -1,8 +1,11 @@
 ---
 domains:
-- "www.wp.pl"
+- "www.wpp.pl"
 global: {}
 clusters:
   ap-southeast-sin-edge:
+    enabled: false
+    overlay: {}
+  ap-southeast-sin-processing:
     enabled: true
     overlay: {}
