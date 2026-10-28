@@ -1,11 +1,9 @@
 ---
-domains:
-- "www.google.com"
 global: {}
 clusters:
   ap-southeast-sin-edge:
-    enabled: false
+    enabled: true
     overlay: {}
-  ap-southeast-sin-processing:
+  eu-west-par-processing:
     enabled: true
     overlay: {}
