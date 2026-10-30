@@ -1,17 +1,15 @@
 ---
-generation: 20
+generation: 21
 domains:
 - "www.wp.pl"
 - "abc.com"
 - "single-push-check.example.com"
-- "multi-c.example.com"
-- "multi-d.example.com"
-- "multi-e.example.com"
+- "multi-f.example.com"
 global: {}
 clusters:
   ap-southeast-sin-edge:
-    enabled: true
+    enabled: false
     overlay: {}
   eu-west-par-processing:
-    enabled: false
+    enabled: true
     overlay: {}
