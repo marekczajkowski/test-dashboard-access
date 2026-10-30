@@ -3,7 +3,6 @@ generation: 10
 domains:
 - "www.wp.pl"
 - "abc.com"
-- "stage-b.example.com"
 global: {}
 clusters:
   ap-southeast-sin-edge:
