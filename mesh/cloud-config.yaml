@@ -1,10 +1,9 @@
 ---
-generation: 15
+generation: 16
 domains:
 - "www.wp.pl"
 - "abc.com"
 - "single-push-check.example.com"
-- "stage-b.example.com"
 global: {}
 clusters:
   ap-southeast-sin-edge:
