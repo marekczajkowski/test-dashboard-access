@@ -1,4 +1,7 @@
 ---
+generation: 1
+domains:
+- "www.wp.pl"
 global: {}
 clusters:
   ap-southeast-sin-edge:
