@@ -1,8 +1,5 @@
 ---
-generation: 10
-domains:
-- "www.wp.pl"
-- "abc.com"
+generation: 11
 global: {}
 clusters:
   ap-southeast-sin-edge:
