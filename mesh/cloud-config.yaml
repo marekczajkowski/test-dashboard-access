@@ -1,14 +1,9 @@
 ---
-generation: 24
-domains:
-- "www.wp.pl"
-- "abc.com"
-- "single-push-check.example.com"
 global: {}
 clusters:
-  ap-southeast-sin-edge:
+  eu-west-par-processing:
     enabled: true
     overlay: {}
-  eu-west-par-processing:
+  us-west-lax-edge:
     enabled: true
     overlay: {}
