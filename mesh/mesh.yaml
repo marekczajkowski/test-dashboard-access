@@ -14,140 +14,6 @@ descriptors:
         outgoing:
           relayed-events: {}
 
-  external-references-rewriter:
-    type: processing
-    serviceUnits: 0.25
-    containers:
-      processor:
-        image: ghcr.io/streamx-hub/streamx-blueprints/external-references-rewriter:3.0.27-native
-        incoming:
-          incoming-resources: {}
-        outgoing:
-          outgoing-resources: {}
-          download-requests: {}
-
-  resource-downloader:
-    type: processing
-    serviceUnits: 1.0
-    volumes:
-      rocksdb:
-        size: 5Gi
-    containers:
-      processor:
-        image: ghcr.io/streamx-hub/streamx-blueprints/resource-downloader:3.0.27-native
-        incoming:
-          download-requests: {}
-        outgoing:
-          downloaded-pages: {}
-          downloaded-assets: {}
-          downloaded-web-resources: {}
-        volumes:
-          - rocksdb:/var/lib/rocksdb
-
-  indexable-resources-producer:
-    type: processing
-    serviceUnits: 0.5
-    containers:
-      processor:
-        image: ghcr.io/streamx-hub/streamx-blueprints/indexable-resources-producer:3.0.27-native
-        incoming:
-          pages: {}
-          fragments: {}
-        outgoing:
-          indexable-resources: {}
-          indexable-resource-fragments: {}
-
-  indexable-resources-sql-transformer:
-    type: processing
-    serviceUnits: 1.0
-    volumes:
-      sqlitedb:
-        size: 5Gi
-    containers:
-      processor:
-        image: ghcr.io/streamx-hub/streamx-blueprints/indexable-resources-sql-transformer:3.0.27-native
-        incoming:
-          indexable-resources: { }
-        outgoing:
-          transformations: { }
-        autoRef:
-          - from: indexable-resources
-            to: indexable-resources-state
-            using: sync-state
-        volumes:
-          - sqlitedb:/var/lib/sqlitedb
-        environment:
-          STREAMX_BLUEPRINTS_SQL_STATE_REPOSITORY_SQLITE_PATH: /var/lib/sqlitedb
-
-  rendering-engine:
-    type: processing
-    serviceUnits: 1.0
-    volumes:
-      rocksdb:
-        size: 5Gi
-    containers:
-      processor:
-        image: ghcr.io/streamx-hub/streamx-blueprints/rendering-engine:3.0.27-native
-        incoming:
-          data: { }
-          renderers: { }
-          rendering-contexts: { }
-        outgoing:
-          pages: { }
-          fragments: { }
-        autoRef:
-          - from: outgoing-rendering-requests
-            to: incoming-rendering-requests
-            using: internal-relay
-          - from: data
-            to: data-state
-            using: sync-state
-          - from: renderers
-            to: renderers-state
-            using: sync-state
-          - from: rendering-contexts
-            to: rendering-contexts-state
-            using: sync-state
-        volumes:
-          - rocksdb:/var/lib/rocksdb
-
-  opensearch-sink:
-    type: edge
-    serviceUnits: 4.0
-    volumes:
-      opensearch-data:
-        size: 20Gi
-        persistent: true
-      rocksdb:
-        size: 20Gi
-        persistent: true
-    containers:
-      sink:
-        image: ghcr.io/streamx-hub/streamx-blueprints/opensearch-sink:3.0.27-native
-        incoming:
-          indexable-resources:
-            initState: delta
-          indexable-resource-fragments:
-            initState: delta
-        servicePorts:
-          - 8082:8080
-        volumes:
-          - opensearch-data:/usr/share/opensearch/data
-          - rocksdb:/var/lib/rocksdb
-        environment:
-          QUARKUS_ELASTICSEARCH_HOSTS: ${STREAMX_SERVICE_ID}.opensearch:9201
-      opensearch:
-        image: registry.prod-ext.streamx.cloud/streamx-docker-hub-public-proxy/opensearchproject/opensearch:2.16.0
-        servicePorts:
-          - 9201:9201
-        volumes:
-          - opensearch-data:/usr/share/opensearch/data
-        environment:
-          network.host: 0.0.0.0
-          http.port: "9201"
-          discovery.type: single-node
-          DISABLE_SECURITY_PLUGIN: "true"
-
   web-server-sink:
     type: edge
     serviceUnits: 1.0
@@ -157,7 +23,7 @@ descriptors:
         persistent: true
     containers:
       sink:
-        image: ghcr.io/streamx-hub/streamx-blueprints/web-server-sink:3.0.27-native
+        image: ghcr.io/streamx-com/streamx-blueprints/web-server-sink:3.0.19-native
         incoming:
           resources:
             initState: delta
@@ -193,13 +59,6 @@ networking:
           backendRefs:
             - name: edge/opensearch-sink
               port: 8082
-        - matches:
-            - path:
-                type: PathPrefix
-                value: /
-          backendRefs:
-            - name: edge/web-server-sink
-              port: 8084
 
 sources:
   github:
@@ -220,14 +79,6 @@ sources:
         produces:
           - com.streamx.blueprints.asset.published.v1
           - com.streamx.blueprints.asset.unpublished.v1
-      - ref: inbox.renderers
-        produces:
-          - com.streamx.blueprints.renderer.published.v1
-          - com.streamx.blueprints.renderer.unpublished.v1
-      - ref: inbox.rendering-contexts
-        produces:
-          - com.streamx.blueprints.rendering-context.published.v1
-          - com.streamx.blueprints.rendering-context.unpublished.v1
 
 ingestion:
   rest-ingestion:
@@ -261,127 +112,6 @@ processing:
           relayed-events:
             ref: outbox.assets
 
-  indexable-resources-relay:
-    descriptor: relay
-    containers:
-      service:
-        incoming:
-          events:
-            ref: relay.indexable-resources
-        outgoing:
-          relayed-events:
-            ref: outbox.indexable-resources
-
-  download-requests-relay:
-    descriptor: relay
-    containers:
-      service:
-        incoming:
-          events:
-            ref: inbox.download-requests
-        outgoing:
-          relayed-events:
-            ref: relay.download-requests
-
-  pages-external-references-rewriter:
-    descriptor: external-references-rewriter
-    containers:
-      processor:
-        incoming:
-          incoming-resources:
-            ref: inbox.pages
-        outgoing:
-          outgoing-resources:
-            ref: relay.pages
-          download-requests:
-            ref: relay.download-requests
-        environmentFrom:
-          configs:
-            - external-references-rewriter.pages.properties
-
-  web-resources-external-references-rewriter:
-    descriptor: external-references-rewriter
-    containers:
-      processor:
-        incoming:
-          incoming-resources:
-            ref: inbox.web-resources
-        outgoing:
-          outgoing-resources:
-            ref: outbox.web-resources
-          download-requests:
-            ref: relay.download-requests
-        environmentFrom:
-          configs:
-            - external-references-rewriter.web-resources.properties
-
-  resource-downloader:
-    descriptor: resource-downloader
-    containers:
-      processor:
-        incoming:
-          download-requests:
-            ref: relay.download-requests
-        outgoing:
-          downloaded-pages:
-            ref: inbox.pages
-          downloaded-assets:
-            ref: inbox.assets
-          downloaded-web-resources:
-            ref: inbox.web-resources
-
-  indexable-resources-producer:
-    descriptor: indexable-resources-producer
-    containers:
-      processor:
-        incoming:
-          pages:
-            ref: relay.pages
-          fragments:
-            ref: relay.fragments
-        outgoing:
-          indexable-resources:
-            ref: relay.indexable-resources
-          indexable-resource-fragments:
-            ref: outbox.indexable-resource-fragments
-        environment:
-          QUARKUS_CONFIG_LOCATIONS: "/deployments/config/application.yaml"
-        volumesFrom:
-          configs:
-            - "indexable-resources-producer.yaml:/deployments/config/application.yaml"
-
-  indexable-resources-sql-transformer:
-    descriptor: indexable-resources-sql-transformer
-    containers:
-      processor:
-        incoming:
-          indexable-resources:
-            ref: relay.indexable-resources
-        outgoing:
-          transformations:
-            ref: relay.data
-        environment:
-          QUARKUS_CONFIG_LOCATIONS: "/deployments/config/application.yaml"
-        volumesFrom:
-          configs:
-            - "indexable-resources-sql-transformer.yaml:/deployments/config/application.yaml"
-
-  rendering-engine:
-    descriptor: rendering-engine
-    containers:
-      processor:
-        incoming:
-          data:
-            ref: relay.data
-          renderers:
-            ref: inbox.renderers
-          rendering-contexts:
-            ref: inbox.rendering-contexts
-        outgoing:
-          pages:
-            ref: outbox.web-resources
-          fragments:
-            ref: outbox.fragments
 
 edge:
   web-server-sink:
