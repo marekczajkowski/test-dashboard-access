@@ -1,4 +1,5 @@
 ---
+generation: 1
 global: {}
 clusters:
   eu-west-par-processing:
@@ -8,5 +9,5 @@ clusters:
     enabled: true
     overlay: {}
   ap-southeast-sin-edge:
-    enabled: false
+    enabled: true
     overlay: {}
