@@ -5,8 +5,8 @@ clusters:
     enabled: true
     overlay: {}
   us-west-lax-edge:
-    enabled: true
+    enabled: false
     overlay: {}
   ap-southeast-sin-edge:
-    enabled: true
+    enabled: false
     overlay: {}
