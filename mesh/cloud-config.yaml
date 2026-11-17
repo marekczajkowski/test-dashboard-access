@@ -1,5 +1,5 @@
 ---
-generation: 2
+generation: 3
 global:
   services:
     edge:
@@ -17,5 +17,5 @@ clusters:
     enabled: true
     overlay: {}
   us-west-lax-edge:
-    enabled: true
+    enabled: false
     overlay: {}
