@@ -1,7 +1,6 @@
----
-generation: 2
+generation: 0
 domains:
-- "initial.switch-retest.example.com"
+- unknown.switch-retest.example.com
 global:
   services:
     edge:
