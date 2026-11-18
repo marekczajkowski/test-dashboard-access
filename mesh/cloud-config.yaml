@@ -1,6 +1,7 @@
-generation: 0
+---
+generation: 4
 domains:
-- unknown.switch-retest.example.com
+- "protected.switch-retest.example.com"
 global:
   services:
     edge:
