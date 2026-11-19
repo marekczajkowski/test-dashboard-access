@@ -1,4 +1,5 @@
 ---
+generation: 2
 global:
   services:
     edge:
@@ -6,12 +7,15 @@ global:
         replicas: 2
         stateful: true
 clusters:
-  ca-east-bhs-edge:
-    enabled: true
-    overlay: {}
   ap-southeast-sin-edge:
-    enabled: true
+    enabled: false
+    overlay: {}
+  ca-east-bhs-edge:
+    enabled: false
     overlay: {}
   eu-west-par-processing:
+    enabled: false
+    overlay: {}
+  us-west-lax-edge:
     enabled: true
     overlay: {}
